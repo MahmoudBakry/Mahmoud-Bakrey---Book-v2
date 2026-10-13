@@ -1,0 +1,679 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-espresso: #241D1A;
+    --color-espresso-dark: #161210;
+    --color-espresso-deep: #0E0B0A;
+    --color-cocoa: #4B3732;
+    --color-cocoa-light: #6A524C;
+    --color-gold: #B99A61;
+    --color-gold-light: #D8BF8A;
+    --color-gold-bright: #E8C988;
+    --color-gold-muted: #8C7243;
+    --color-ivory: #F7F2EA;
+    --color-ivory-dark: #E2DACB;
+    --color-muted-rose: #C28F89;
+  }
+
+  /* Dedicated High-End Luxury Light Mode Palette & Variables */
+  html.light-mode {
+    --color-espresso: #FBF8F3;
+    --color-espresso-dark: #F5EFE6;
+    --color-espresso-deep: #ECE2D4;
+    --color-cocoa: #8C7243;
+    --color-cocoa-light: #4B3732;
+    --color-gold: #9B7E45;
+    --color-gold-light: #7E6534;
+    --color-gold-bright: #685125;
+    --color-gold-muted: #57411E;
+    --color-ivory: #241D1A;
+    --color-ivory-dark: #3A2E2A;
+    --color-muted-rose: #9A6660;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  body {
+    background-color: #1C1614;
+    color: #F7F2EA;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    transition: background-color 0.4s ease, color 0.4s ease;
+  }
+
+  html.light-mode body {
+    background-color: #FAF6F0;
+    color: #241D1A;
+  }
+
+  [dir="rtl"] body {
+    font-family: 'Alexandria', 'Plus Jakarta Sans', sans-serif;
+  }
+}
+
+/* =========================================================================
+   LIGHT MODE OVERRIDES FOR ATELIER LUXURY PALETTE (IVORY, LINEN & GOLD)
+   ========================================================================= */
+html.light-mode {
+  /* ---------------------------------------------------------
+     1. GLOBAL TYPOGRAPHY COLOR SCALES (WCAG AAA / AA CONTRAST)
+     --------------------------------------------------------- */
+
+  /* Primary Headings & Bold Text (replacing light ivory #F7F2EA) */
+  [class*="text-[#F7F2EA]"],
+  [class*="text-[#f7f2ea]"],
+  .text-\[\#F7F2EA\] {
+    color: #1A1412 !important;
+  }
+
+  /* Body Prose & Curated Copy (replacing sand/linen #E5DED1) */
+  [class*="text-[#E5DED1]"],
+  [class*="text-[#e5ded1]"],
+  .text-\[\#E5DED1\] {
+    color: #3E322D !important;
+  }
+
+  /* Secondary Subtext with opacities */
+  [class*="text-[#E5DED1]/90"],
+  [class*="text-[#E5DED1]/85"],
+  [class*="text-[#E5DED1]/80"] {
+    color: #433530 !important;
+  }
+
+  [class*="text-[#E5DED1]/70"],
+  [class*="text-[#E5DED1]/60"] {
+    color: #5C4A43 !important;
+  }
+
+  [class*="text-[#F7F2EA]/90"],
+  [class*="text-[#F7F2EA]/80"] {
+    color: #2E2522 !important;
+  }
+
+  /* Warm Calligraphy & Champagne Gold Accents (replacing #D8BF8A) */
+  [class*="text-[#D8BF8A]"],
+  [class*="text-[#d8bf8a]"],
+  .text-\[\#D8BF8A\] {
+    color: #78561C !important;
+  }
+
+  [class*="text-[#D8BF8A]/90"],
+  [class*="text-[#D8BF8A]/80"],
+  [class*="text-[#D8BF8A]/70"] {
+    color: #6E4E18 !important;
+  }
+
+  /* Core Atelier Gold (replacing #B99A61) -> Deep Antique Couture Gold */
+  [class*="text-[#B99A61]"],
+  [class*="text-[#b99a61]"],
+  .text-\[\#B99A61\] {
+    color: #725218 !important;
+  }
+
+  [class*="text-[#B99A61]/90"],
+  [class*="text-[#B99A61]/80"],
+  [class*="text-[#B99A61]/70"] {
+    color: #644512 !important;
+  }
+
+  [class*="text-[#B99A61]/60"],
+  [class*="text-[#B99A61]/50"],
+  [class*="text-[#B99A61]/40"] {
+    color: #8C6D34 !important;
+  }
+
+  /* Pale Gold Accents (replacing #F5DFB5, #E6CA85) */
+  [class*="text-[#F5DFB5]"],
+  [class*="text-[#f5dfb5]"],
+  [class*="text-[#E6CA85]"],
+  [class*="text-[#e6ca85]"] {
+    color: #78561C !important;
+  }
+
+  /* White text converted to Crisp Espresso Black for light surfaces */
+  .text-white:not(button.bg-gradient-to-r *):not(.bg-gradient-to-r *),
+  [class*="text-white"]:not(button.bg-gradient-to-r *):not(.bg-gradient-to-r *):not([class*="text-white/"]) {
+    color: #1A1412 !important;
+  }
+
+  /* Specific white headings & prices across sections */
+  #hero .text-white,
+  #hero .highlight-item span.text-white,
+  #chapters .text-white,
+  #book-preview .text-white,
+  [role="dialog"] .text-white {
+    color: #1A1412 !important;
+  }
+
+  /* Hover states that previously turned text white */
+  [class*="hover:text-white"]:hover {
+    color: #1A1412 !important;
+  }
+
+  [class*="hover:text-neutral-200"]:hover {
+    color: #1A1412 !important;
+  }
+
+  /* Watermark oversized background numerals */
+  [class*="text-white/[0.03]"],
+  .text-white\/\[0\.03\] {
+    color: rgba(185, 154, 97, 0.08) !important;
+  }
+
+  /* Partial opacity white texts converted to readable taupe/espresso */
+  [class*="text-white/50"],
+  [class*="text-white/60"] {
+    color: #6E5B53 !important;
+  }
+
+  [class*="text-white/70"],
+  [class*="text-white/80"] {
+    color: #433530 !important;
+  }
+
+  [class*="text-white/90"] {
+    color: #1A1412 !important;
+  }
+
+  /* Headings & Text Shadows for Light Mode */
+  .text-depth-arabic-title {
+    letter-spacing: -0.012em;
+    word-spacing: 0.16em;
+    color: #1A1412 !important;
+    text-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.9),
+      0 2px 8px rgba(185, 154, 97, 0.12) !important;
+  }
+
+  .text-depth-arabic-calligraphy {
+    color: #78561C !important;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+  }
+
+  .text-depth-arabic-eyebrow {
+    color: #725218 !important;
+    text-shadow: none !important;
+  }
+
+  /* ---------------------------------------------------------
+     2. BACKGROUNDS & SURFACES CONVERSIONS
+     --------------------------------------------------------- */
+  .bg-\[\#1B1513\],
+  .bg-\[\#1C1614\],
+  .bg-\[\#09090B\]\/90,
+  .bg-\[\#1A1412\]\/98,
+  .bg-\[\#1D1715\],
+  .bg-\[\#241D1A\] {
+    background-color: #FAF6F0 !important;
+  }
+
+  /* Main cards: Crisp Luminous Linen & White Panels */
+  .bg-\[\#241D1A\]\/85,
+  .bg-\[\#241D1A\]\/90,
+  .bg-\[\#241D1A\]\/95,
+  .challenge-card-item,
+  .luminous-card,
+  .glass-panel-dark {
+    background: rgba(255, 255, 255, 0.96) !important;
+    border-color: rgba(185, 154, 97, 0.35) !important;
+    box-shadow: 0 16px 45px -12px rgba(110, 85, 55, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1) !important;
+  }
+
+  /* Inner cards, widgets, and info blocks */
+  .bg-\[\#140E0C\]\/95,
+  .bg-\[\#140E0C\]\/90,
+  .bg-\[\#1B1513\]\/90,
+  .bg-\[\#1B1513\]\/80,
+  .bg-\[\#231B18\]\/95,
+  .bg-\[\#231B18\]\/90,
+  .bg-\[\#231B18\]\/70,
+  .bg-\[\#241D1A\]\/70,
+  .bg-\[\#241D1A\]\/60,
+  .bg-\[\#2A1F1B\]\/60,
+  .bg-\[\#271F1B\],
+  .bg-\[\#241C1A\],
+  .bg-\[\#2A201C\] {
+    background-color: #F4ECE1 !important;
+    border-color: rgba(185, 154, 97, 0.3) !important;
+  }
+
+  /* Bottom global conversion CTA dock */
+  .bg-gradient-to-b.from-\[\#281F1B\] {
+    background: linear-gradient(135deg, #FFFFFF 0%, #F5EFE6 100%) !important;
+    border-color: rgba(185, 154, 97, 0.45) !important;
+    box-shadow: 0 20px 50px -15px rgba(110, 85, 55, 0.12) !important;
+  }
+
+  /* Supplier bonus card in chapters & modal */
+  .bg-gradient-to-r.from-\[\#2B1F1B\] {
+    background: linear-gradient(135deg, #F5EFE6 0%, #EAE0D2 100%) !important;
+    border-color: rgba(185, 154, 97, 0.45) !important;
+  }
+
+  /* ---------------------------------------------------------
+     3. BORDERS & SHADOWS
+     --------------------------------------------------------- */
+  .border-\[\#B99A61\]\/40,
+  .border-\[\#B99A61\]\/35,
+  .border-\[\#B99A61\]\/30,
+  .border-\[\#B99A61\]\/25,
+  .border-\[\#B99A61\]\/20,
+  .border-white\/\[0\.08\],
+  .border-white\/15,
+  .border-white\/10 {
+    border-color: rgba(185, 154, 97, 0.35) !important;
+  }
+
+  /* ---------------------------------------------------------
+     4. COMPONENT SPECIFIC POLISHING
+     --------------------------------------------------------- */
+
+  /* Header sticky background in light mode */
+  header.bg-\[\#09090B\]\/90,
+  header {
+    border-bottom-color: rgba(185, 154, 97, 0.25) !important;
+  }
+
+  header nav a {
+    color: #3E322D !important;
+  }
+
+  header nav a:hover {
+    color: #725218 !important;
+  }
+
+  /* Mobile menu drawer in light mode */
+  .bg-\[\#1A1412\]\/98 {
+    background-color: rgba(250, 246, 240, 0.98) !important;
+    border-bottom-color: rgba(185, 154, 97, 0.3) !important;
+  }
+
+  /* Hero Section Dynamic Backdrop in Light Mode */
+  #hero {
+    background-color: #FAF6F0 !important;
+    background-image:
+      radial-gradient(circle 900px at 50% 20%, rgba(245, 223, 181, 0.35) 0%, rgba(216, 191, 138, 0.2) 28%, rgba(242, 235, 224, 0.6) 65%, #FAF6F0 100%),
+      radial-gradient(ellipse 700px 500px at 85% 60%, rgba(194, 143, 137, 0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 700px 500px at 15% 70%, rgba(216, 191, 138, 0.15) 0%, transparent 60%) !important;
+  }
+
+  /* Kinetic Typography in Light Mode */
+  .kinetic-munira {
+    -webkit-text-stroke: 1px rgba(185, 154, 97, 0.25) !important;
+    text-shadow: 0 0 40px rgba(185, 154, 97, 0.08) !important;
+  }
+
+  /* Studio Glow adjustments */
+  .studio-glow-spotlight {
+    background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(216, 191, 138, 0.22) 0%, rgba(185, 154, 97, 0.08) 40%, transparent 75%) !important;
+  }
+
+  /* Book Preview Scene 01 Light Veil on fabric macro */
+  #book-preview > div:first-child .absolute.inset-0[style*="radial-gradient"] {
+    background:
+      radial-gradient(circle at 50% 50%, rgba(250, 246, 240, 0.55) 0%, rgba(250, 246, 240, 0.88) 70%, #FAF6F0 100%),
+      linear-gradient(180deg, rgba(250, 246, 240, 0.95) 0%, rgba(250, 246, 240, 0.6) 25%, rgba(250, 246, 240, 0.6) 75%, #FAF6F0 100%) !important;
+  }
+
+  /* Book Preview Section Bottom Gradient Bleed */
+  #book-preview > div:last-child {
+    background: linear-gradient(180deg, #FAF6F0 0%, #F5EFE6 100%) !important;
+  }
+
+  /* Preorder modal dialog backdrop */
+  .bg-black\/80,
+  .bg-black\/85 {
+    background-color: rgba(36, 29, 26, 0.55) !important;
+  }
+
+  /* Form inputs in PreorderDrawer */
+  input {
+    background-color: #FFFFFF !important;
+    color: #1A1412 !important;
+    border-color: rgba(185, 154, 97, 0.45) !important;
+  }
+
+  input::placeholder {
+    color: #8C7C75 !important;
+  }
+
+  /* Wordmark in BrandMonogram */
+  .font-editorial-serif.text-\[\#F7F2EA\] {
+    color: #1A1412 !important;
+  }
+
+  /* Preview controls text colors */
+  .font-editorial-serif.text-zinc-400 {
+    color: #63534C !important;
+  }
+
+  .text-zinc-500 {
+    color: #8C6D34 !important;
+  }
+}
+
+/* Studio Overhead Radiant Glow Utilities */
+.studio-glow-spotlight {
+  background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(245, 223, 181, 0.28) 0%, rgba(185, 154, 97, 0.14) 40%, transparent 75%);
+}
+
+.luminous-card {
+  background: linear-gradient(145deg, rgba(46, 36, 31, 0.85) 0%, rgba(33, 25, 22, 0.9) 100%);
+  border: 1px solid rgba(216, 191, 138, 0.35);
+  box-shadow: 0 15px 40px -10px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(245, 223, 181, 0.22);
+}
+
+/* Typography Utility Classes */
+.font-arabic-display {
+  font-family: 'Alexandria', sans-serif;
+}
+
+.font-arabic-calligraphy {
+  font-family: 'Amiri', serif;
+}
+
+.font-editorial-serif {
+  font-family: 'Cinzel', serif;
+}
+
+.font-body-sans {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* 3D Perspective and Book Utilities */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.perspective-1600 {
+  perspective: 1600px;
+}
+
+.perspective-2000 {
+  perspective: 2000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+/* Luxury Atelier Fine Lines and Metallic Gradients */
+.gold-gradient-text {
+  background: linear-gradient(135deg, #F3DEB2 0%, #B99A61 50%, #8E7039 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Glassy & Glowy Luxury Atelier Panels */
+.glass-panel-light, .glass-crystal {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 
+    0 20px 45px -15px rgba(15, 23, 42, 0.07),
+    0 0 0 1px rgba(0, 0, 0, 0.04),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 1);
+}
+
+.glass-crystal-card {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 
+    0 15px 35px -10px rgba(15, 23, 42, 0.05),
+    0 0 0 1px rgba(255, 255, 255, 0.8),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.9);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-crystal-card:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(212, 175, 55, 0.5);
+  box-shadow: 
+    0 25px 50px -12px rgba(212, 175, 55, 0.16),
+    0 0 0 1px rgba(212, 175, 55, 0.3);
+}
+
+.glass-panel-dark {
+  background: rgba(18, 16, 15, 0.75);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(216, 191, 138, 0.25);
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.65),
+    0 0 35px -5px rgba(185, 154, 97, 0.15),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.glow-gold-modern {
+  box-shadow: 
+    0 0 30px -4px rgba(212, 175, 55, 0.35),
+    0 10px 25px -5px rgba(212, 175, 55, 0.2);
+}
+
+.glow-aura-warm {
+  box-shadow: 0 0 35px -5px rgba(212, 175, 55, 0.3);
+}
+
+.glow-btn-navbar {
+  box-shadow: 
+    0 4px 18px -2px rgba(212, 175, 55, 0.45),
+    0 0 12px 1px rgba(245, 223, 181, 0.35);
+}
+
+.glow-btn-navbar:hover {
+  box-shadow: 
+    0 6px 26px 0 rgba(212, 175, 55, 0.65),
+    0 0 22px 4px rgba(245, 223, 181, 0.55);
+}
+
+/* High-Contrast Crisp Editorial Typography on Light Backgrounds */
+.text-depth-light-title {
+  color: #09090B;
+  letter-spacing: -0.02em;
+  word-spacing: 0.12em;
+}
+
+.text-depth-light-calligraphy {
+  color: #B8860B;
+  letter-spacing: 0.01em;
+  word-spacing: 0.1em;
+}
+
+/* Luxury Arabic Typography Depth & Ambient 3D Shadows */
+.text-depth-arabic-title {
+  /* Carefully calibrated micro-spacing for Alexandria geometric Arabic display */
+  letter-spacing: -0.012em;
+  word-spacing: 0.16em;
+  text-shadow:
+    0 1px 1px rgba(245, 223, 181, 0.45),         /* Top specular gold foil rim highlight */
+    0 2px 2px rgba(18, 14, 12, 0.95),           /* Crisp extrusion edge */
+    0 4px 8px rgba(36, 29, 26, 0.9),            /* Warm cocoa cast shadow */
+    0 10px 24px rgba(185, 154, 97, 0.32),       /* Champagne gold atmospheric glow */
+    0 20px 50px rgba(10, 8, 7, 0.95);           /* Deep ambient vignette */
+}
+
+/* English LTR Typographic Mirror */
+[dir="ltr"] .text-depth-arabic-title {
+  letter-spacing: 0.035em;
+  word-spacing: normal;
+}
+
+.text-depth-arabic-calligraphy {
+  letter-spacing: 0.015em;
+  word-spacing: 0.14em;
+  text-shadow:
+    0 1px 1px rgba(245, 223, 181, 0.55),         /* Delicate top gold highlight */
+    0 2px 3px rgba(20, 15, 13, 0.95),           /* Core ink shadow */
+    0 6px 16px rgba(216, 191, 138, 0.38),       /* Warm luminous halo */
+    0 14px 35px rgba(10, 8, 7, 0.92);           /* Spatial grounding shadow */
+}
+
+.text-depth-arabic-eyebrow {
+  letter-spacing: 0.04em;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.85),
+    0 0 14px rgba(185, 154, 97, 0.35);
+}
+
+.text-depth-gold-shimmer {
+  text-shadow:
+    0 0 22px rgba(232, 201, 136, 0.4),
+    0 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+.gold-border-gradient {
+  border-image: linear-gradient(135deg, rgba(232, 201, 136, 0.6), rgba(185, 154, 97, 0.2), rgba(232, 201, 136, 0.5)) 1;
+}
+
+/* Atelier Subtle Noise/Texture Overlay */
+.luxury-noise {
+  background-image: radial-gradient(rgba(185, 154, 97, 0.04) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+/* =========================================================================
+   CINEMATIC PRIMARY CTA & FOMO ANIMATIONS
+   ========================================================================= */
+@keyframes goldShimmerSweep {
+  0% {
+    transform: translateX(-120%) rotate(25deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.75;
+  }
+  35% {
+    opacity: 0.9;
+  }
+  50% {
+    transform: translateX(220%) rotate(25deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(220%) rotate(25deg);
+    opacity: 0;
+  }
+}
+
+@keyframes luxuryPulseCta {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 25px rgba(185, 154, 97, 0.35), 0 10px 30px rgba(0, 0, 0, 0.5);
+  }
+  50% {
+    transform: scale(1.025);
+    box-shadow: 0 0 45px rgba(230, 202, 133, 0.65), 0 15px 40px rgba(185, 154, 97, 0.4);
+  }
+}
+
+@keyframes fomoRadarPulse {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+}
+
+@keyframes floatBadge {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.animate-gold-shimmer {
+  animation: goldShimmerSweep 3.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.luxury-pulse-cta {
+  animation: luxuryPulseCta 2.8s ease-in-out infinite;
+}
+
+.animate-fomo-radar {
+  animation: fomoRadarPulse 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.animate-float-badge {
+  animation: floatBadge 3.2s ease-in-out infinite;
+}
+
+/* Outcrowd Modern Spatial Design Utilities */
+@keyframes floatGentle {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(0.8deg);
+  }
+}
+
+@keyframes floatGentleOpposite {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(8px) rotate(-0.8deg);
+  }
+}
+
+.animate-float-gentle {
+  animation: floatGentle 6s ease-in-out infinite;
+}
+
+.animate-float-opposite {
+  animation: floatGentleOpposite 5.4s ease-in-out infinite;
+}
+
+.glass-outcrowd {
+  background: rgba(30, 24, 21, 0.72);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.55), inset 0 1px 1px rgba(255, 255, 255, 0.18);
+}
+
+html.light-mode .glass-outcrowd {
+  background: rgba(255, 255, 255, 0.88) !important;
+  border-color: rgba(185, 154, 97, 0.35) !important;
+  box-shadow: 0 30px 60px -12px rgba(185, 154, 97, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.9) !important;
+}
+
+.book-3d-shadow {
+  box-shadow: 
+    -20px 25px 50px -10px rgba(0, 0, 0, 0.85),
+    0 12px 30px -5px rgba(185, 154, 97, 0.35),
+    inset -2px 0 6px rgba(255, 255, 255, 0.2);
+}
+
+
+/* Reduced Motion Safety */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: initial !important;
+    scroll-behavior: auto !important;
+    transition-delay: 0s !important;
+    transition-duration: 0s !important;
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "Remix Munira Alharbi — Fashion Business Guide",
+  "description": "Premium interactive fashion book website for Kuwaiti designer Munira Alharbi.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
