@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
-import { ChevronDown, HelpCircle, Sparkles, BookOpen, Eye } from 'lucide-react';
+import { ChevronDown, HelpCircle, Sparkles } from 'lucide-react';
 import { useLanguage } from '../../hooks/useLanguage';
 
-interface FAQSectionProps {
-  onOpenReader?: () => void;
-}
-
-export const FAQSection: React.FC<FAQSectionProps> = ({ onOpenReader }) => {
+export const FAQSection: React.FC = () => {
   const { content, isRtl } = useLanguage();
   // By default, first item is expanded, others can be toggled smoothly
   const [openIndices, setOpenIndices] = useState<number[]>([0, 1, 2, 3]);
@@ -108,35 +104,6 @@ export const FAQSection: React.FC<FAQSectionProps> = ({ onOpenReader }) => {
             );
           })}
         </div>
-
-        {/* Interactive Demo Book Preview Callout in the Last Section */}
-        {onOpenReader && (
-          <div className="mt-14 sm:mt-18 pt-8 border-t border-[#B99A61]/20 flex flex-col sm:flex-row items-center justify-between gap-6 p-6 sm:p-8 rounded-3xl bg-[#221A17]/80 border border-[#B99A61]/35 shadow-2xl backdrop-blur-md">
-            <div className="flex items-center gap-4 text-start">
-              <div className="w-12 h-12 rounded-2xl bg-[#B99A61]/20 border border-[#B99A61]/60 flex items-center justify-center text-[#E6CA85] shrink-0 shadow-inner">
-                <BookOpen className="w-6 h-6" />
-              </div>
-              <div>
-                <span className="text-[11px] font-editorial-serif tracking-widest uppercase text-[#B99A61] block font-semibold mb-0.5">
-                  {isRtl ? 'نسخة تجريبية • DEMO PREVIEW' : 'DEMO PREVIEW'}
-                </span>
-                <h4 className="text-base sm:text-lg font-bold font-arabic-display text-[#F7F2EA]">
-                  {isRtl ? 'معاينة تجربة قراءة الدليل الأصلي' : 'Preview The Original Fashion Guide'}
-                </h4>
-              </div>
-            </div>
-
-            <button
-              onClick={onOpenReader}
-              className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-gradient-to-r from-[#B99A61] via-[#E6CA85] to-[#B99A61] text-[#16110F] font-extrabold text-sm sm:text-base font-arabic-display shadow-[0_10px_25px_rgba(185,154,97,0.35)] hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2.5 cursor-pointer border border-[#FFF0D0]"
-              aria-label={isRtl ? 'عاين الكتاب' : 'Preview Book'}
-            >
-              <Eye className="w-4 h-4 text-[#16110F]" />
-              <span>{isRtl ? 'عاين الكتاب' : 'Preview Book'}</span>
-            </button>
-          </div>
-        )}
-
       </div>
     </section>
   );

@@ -9,8 +9,8 @@ export const FloatingWhatsApp: React.FC = () => {
 
   return (
     <div
-      className={`fixed bottom-6 z-40 flex items-center gap-3 ${
-        isRtl ? 'left-6' : 'right-6'
+      className={`fixed bottom-5 sm:bottom-6 z-40 flex items-center gap-3 ${
+        isRtl ? 'left-4 sm:left-6' : 'right-4 sm:right-6'
       }`}
     >
       {/* Floating Hover Tooltip Pill */}

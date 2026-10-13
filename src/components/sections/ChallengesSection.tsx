@@ -255,7 +255,7 @@ export const ChallengesSection: React.FC = () => {
                 onMouseEnter={() => setHoveredCard(idx)}
                 onMouseLeave={() => setHoveredCard(null)}
                 onMouseMove={(e) => handleMouseMove(e, idx)}
-                className={`challenge-card-item group relative flex flex-col justify-between rounded-3xl p-7 sm:p-8 transition-all duration-500 overflow-hidden cursor-default ${
+                className={`challenge-card-item group relative flex flex-col justify-between rounded-3xl p-5 sm:p-8 transition-all duration-500 overflow-hidden cursor-default ${
                   isHovered
                     ? '-translate-y-2 shadow-[0_25px_50px_rgba(185,154,97,0.18)] border-[#B99A61]/80'
                     : 'shadow-xl border-[#B99A61]/30 hover:border-[#B99A61]/60'
@@ -348,7 +348,7 @@ export const ChallengesSection: React.FC = () => {
                         <span>{isRtl ? 'معايير اختيار الموردين' : 'Supplier Verification'}</span>
                         <ShieldCheck className="w-4 h-4 text-[#B99A61]" />
                       </div>
-                      <div className="grid grid-cols-2 gap-2 text-[11px] text-[#E5DED1]/85 font-arabic-display">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] text-[#E5DED1]/85 font-arabic-display">
                         <div className="flex items-center gap-1.5 p-2 rounded-xl bg-[#241D1A] border border-[#B99A61]/25">
                           <CheckCircle2 className="w-3.5 h-3.5 text-[#B99A61] shrink-0" />
                           <span>{isRtl ? 'فحص عيّنات الأقمشة' : 'Fabric Swatch Test'}</span>

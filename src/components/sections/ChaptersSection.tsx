@@ -304,7 +304,7 @@ export const ChaptersSection: React.FC<ChaptersSectionProps> = ({ onOpenPreorder
         <div
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
-          className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch rounded-3xl sm:rounded-[2rem] p-6 sm:p-10 md:p-12 relative overflow-hidden bg-gradient-to-br from-[#241D1A]/95 via-[#1F1816]/90 to-[#241D1A]/95 border border-[#B99A61]/35 backdrop-blur-2xl shadow-2xl ring-1 ring-[#B99A61]/20 ring-inset"
+          className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch rounded-3xl sm:rounded-[2rem] p-5 sm:p-10 md:p-12 relative overflow-hidden bg-gradient-to-br from-[#241D1A]/95 via-[#1F1816]/90 to-[#241D1A]/95 border border-[#B99A61]/35 backdrop-blur-2xl shadow-2xl ring-1 ring-[#B99A61]/20 ring-inset"
         >
           {/* GIGANTIC WATERMARK CHAPTER NUMBER */}
           <div
@@ -506,7 +506,7 @@ export const ChaptersSection: React.FC<ChaptersSectionProps> = ({ onOpenPreorder
         {/* 4. BONUS CONTENT: SUPPLIER DIRECTORY CONCLUDING HIGHLIGHT */}
         <div
           ref={directoryRef}
-          className="mt-14 sm:mt-20 p-8 sm:p-12 rounded-3xl bg-[#241D1A]/90 border border-[#B99A61]/40 backdrop-blur-xl shadow-2xl relative overflow-hidden"
+          className="mt-12 sm:mt-20 p-5 sm:p-10 md:p-12 rounded-3xl bg-[#241D1A]/90 border border-[#B99A61]/40 backdrop-blur-xl shadow-2xl relative overflow-hidden"
         >
           {/* Subtle gold shimmer top line */}
           <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-transparent via-[#B99A61] to-transparent" />

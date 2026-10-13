@@ -131,7 +131,7 @@ export const AnimatedBook: React.FC<AnimatedBookProps> = ({
         />
 
         {/* 3D Physical Book Structure: Front Cover, Spine, Gilded Pages Block */}
-        <div className="relative w-[240px] sm:w-[275px] md:w-[315px] lg:w-[350px] aspect-[1/1.42] rounded-[4px] preserve-3d cursor-pointer shadow-2xl group transition-all duration-300">
+        <div className="relative w-[215px] min-[380px]:w-[240px] sm:w-[275px] md:w-[315px] lg:w-[350px] aspect-[1/1.42] rounded-[4px] preserve-3d cursor-pointer shadow-2xl group transition-all duration-300">
           
           {/* FRONT COVER */}
           <div

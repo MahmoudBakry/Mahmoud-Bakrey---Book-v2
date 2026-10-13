@@ -9,8 +9,6 @@ import { KineticTypography } from '../ui/KineticTypography';
 import { FashionSVGAnimation } from '../ui/FashionSVGAnimation';
 import { CTAButton } from '../ui/CTAButton';
 import { trackEvent } from '../../lib/analytics';
-import { ChaptersPreviewModal } from '../ui/ChaptersPreviewModal';
-
 // Register GSAP ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
 
@@ -21,7 +19,6 @@ interface HeroSectionProps {
 export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenPreorder }) => {
   const { content, isRtl, language } = useLanguage();
   const mouse = useMouseParallax();
-  const [isChaptersModalOpen, setIsChaptersModalOpen] = useState(false);
   
   const heroRootRef = useRef<HTMLElement>(null);
   const eyebrowRef = useRef<HTMLDivElement>(null);
@@ -359,7 +356,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenPreorder }) => {
           {/* Supporting Highlights Strip */}
           <div
             ref={highlightsRef}
-            className="w-full max-w-2xl mx-auto pt-3 border-t border-[#B99A61]/20 flex items-center justify-center gap-4 sm:gap-8 md:gap-10 text-xs sm:text-sm text-[#D8BF8A]"
+            className="w-full max-w-2xl mx-auto pt-3 border-t border-[#B99A61]/20 flex flex-wrap items-center justify-center gap-y-2 gap-x-3 sm:gap-8 md:gap-10 text-xs sm:text-sm text-[#D8BF8A]"
           >
             {content.hero.highlights.map((highlight, index) => (
               <div key={index} className="highlight-item flex items-center gap-1.5 sm:gap-2">
@@ -379,16 +376,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenPreorder }) => {
         </div>
 
       </div>
-
-      {/* Chapters Preview Modal fallback if opened */}
-      <ChaptersPreviewModal
-        isOpen={isChaptersModalOpen}
-        onClose={() => setIsChaptersModalOpen(false)}
-        onSelectBuy={() => {
-          setIsChaptersModalOpen(false);
-          onOpenPreorder();
-        }}
-      />
     </section>
   );
 };

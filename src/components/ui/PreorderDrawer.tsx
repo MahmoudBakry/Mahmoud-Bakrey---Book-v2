@@ -47,13 +47,13 @@ export const PreorderDrawer: React.FC<PreorderDrawerProps> = ({ isOpen, onClose 
       aria-labelledby="drawer-title"
     >
       <div
-        className="relative w-full max-w-xl max-h-[90vh] overflow-y-auto rounded-2xl bg-[#1D1715] border border-[#B99A61]/40 text-[#F7F2EA] shadow-2xl p-6 sm:p-8"
+        className="relative w-full max-w-xl max-h-[92vh] overflow-y-auto rounded-2xl bg-[#1D1715] border border-[#B99A61]/40 text-[#F7F2EA] shadow-2xl p-5 sm:p-8"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Top Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 p-2 rounded-full text-[#B99A61]/70 hover:text-white hover:bg-[#241D1A] transition-colors"
+          className="absolute top-4 sm:top-5 end-4 sm:end-5 p-2 rounded-full text-[#B99A61]/70 hover:text-white hover:bg-[#241D1A] transition-colors"
           aria-label={content.drawer.closeButton}
         >
           <X className="w-5 h-5" />

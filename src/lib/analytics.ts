@@ -5,8 +5,11 @@ export type AnalyticsEventName =
   | 'view_item'
   | 'select_buy_cta'
   | 'explore_chapters_cta'
-  | 'preview_page_viewed'
-  | 'open_book_reader_demo'
+  | 'navigate_to_checkout'
+  | 'navigate_to_landing'
+  | 'mock_payment_completed'
+  | 'purchase_order_submitted'
+  | 'click_my_book'
   | 'begin_checkout'
   | 'payment_proof_submitted'
   | 'purchase';

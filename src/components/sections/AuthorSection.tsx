@@ -166,7 +166,7 @@ export const AuthorSection: React.FC = () => {
               />
 
               {/* The Prestigious Atelier Monogram Plaque (Matching PDF Screenshot) */}
-              <div className="relative rounded-[32px] bg-gradient-to-b from-[#221A17] via-[#1A1412] to-[#120D0C] border-2 border-[#B99A61]/50 p-8 sm:p-12 shadow-[0_25px_60px_rgba(0,0,0,0.8)] flex flex-col items-center justify-center text-center overflow-hidden min-h-[460px] sm:min-h-[520px]">
+              <div className="relative rounded-[32px] bg-gradient-to-b from-[#221A17] via-[#1A1412] to-[#120D0C] border-2 border-[#B99A61]/50 p-6 sm:p-12 shadow-[0_25px_60px_rgba(0,0,0,0.8)] flex flex-col items-center justify-center text-center overflow-hidden min-h-[400px] sm:min-h-[520px]">
                 
                 {/* Subtle Geometric Atelier Watermark in Plaque Background */}
                 <div
