@@ -8,9 +8,10 @@ import { WhatsAppIcon, SnapchatIcon, TikTokIcon, InstagramIcon } from '../ui/Soc
 
 interface FooterProps {
   onOpenPreorder?: () => void;
+  onOpenAdmin?: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onOpenPreorder }) => {
+export const Footer: React.FC<FooterProps> = ({ onOpenPreorder, onOpenAdmin }) => {
   const { content, isRtl, language } = useLanguage();
 
   const scrollToTop = () => {
@@ -176,6 +177,19 @@ export const Footer: React.FC<FooterProps> = ({ onOpenPreorder }) => {
             </span>
             <span className="hidden sm:inline text-[#B99A61]/40">•</span>
             <span>{isRtl ? 'دولة الكويت' : 'State of Kuwait'}</span>
+
+            {onOpenAdmin && (
+              <>
+                <span className="hidden sm:inline text-[#B99A61]/40">•</span>
+                <button
+                  type="button"
+                  onClick={onOpenAdmin}
+                  className="text-[11px] text-[#B99A61] hover:text-[#E6CA85] underline underline-offset-4 font-mono transition-colors cursor-pointer"
+                >
+                  {isRtl ? 'إدارة الطلبات (Admin)' : 'Orders Admin'}
+                </button>
+              </>
+            )}
           </div>
 
           <button

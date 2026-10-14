@@ -15,6 +15,8 @@ import {
   Clock,
   ExternalLink,
   BookOpen,
+  KeyRound,
+  Loader2,
 } from 'lucide-react';
 import { useLanguage } from '../../hooks/useLanguage';
 import { BRAND_CONFIG } from '../../config/brand';
@@ -38,10 +40,13 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
   const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
   const [hasPaidMock, setHasPaidMock] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [validationError, setValidationError] = useState('');
   const [copiedOrderId, setCopiedOrderId] = useState(false);
-  const [orderId] = useState(() => `ORD-${Math.floor(100000 + Math.random() * 900000)}`);
+  const [copiedActivationCode, setCopiedActivationCode] = useState(false);
+  const [assignedActivationCode, setAssignedActivationCode] = useState('');
+  const [orderId] = useState(() => `BK-${Date.now().toString().slice(-6)}-${Math.floor(100 + Math.random() * 900)}`);
 
   const ArrowBackIcon = isRtl ? ArrowRight : ArrowLeft;
   const ArrowForwardIcon = isRtl ? ArrowLeft : ArrowRight;
@@ -50,11 +55,13 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
   const cleanPhone = phoneNumber.trim() || '—';
   const cleanName = fullName.trim() || '—';
   const whatsappMessage = encodeURIComponent(
-    `مرحباً مصممة منيرة، قمت بسداد رسوم "دليل نجاح مشروع الأزياء" وتسجيل بياناتي:\n` +
+    `مرحباً أستاذة منيرة، قمت بسداد رسوم "دليل نجاح مشروع الأزياء" وحجز نسختي في الموقع:\n` +
       `• الاسم: ${cleanName}\n` +
       `• رقم الهاتف: ${cleanPhone}\n` +
       `• رقم الطلب: ${orderId}\n` +
-      `يرجى تزويدي بكود تفعيل الدخول إلى الكتاب.`
+      (assignedActivationCode ? `• كود التفعيل المربوط: ${assignedActivationCode}\n` : '') +
+      `• المبلغ: 50 د.ك\n` +
+      `يرجى تأكيد الحجز وتفعيل الكود لفتح الكتاب.`
   );
   const dynamicWhatsAppUrl = `https://wa.me/96569073494?text=${whatsappMessage}`;
 
@@ -63,7 +70,7 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
     trackEvent('mock_payment_completed', { orderId, amount: 50, currency: 'KWD' });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!fullName.trim()) {
@@ -80,18 +87,61 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
     }
 
     setValidationError('');
-    setIsSubmitted(true);
+    setIsSubmitting(true);
+
+    let receivedCode = '';
+
+    try {
+      // Save order into MongoDB Atlas via backend REST API & auto-generate linked activation code
+      const response = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          orderNumber: orderId,
+          bookTitle: 'أسرار وتناغم الأزياء الراقية - الإصدار الحصري',
+          customerName: fullName.trim(),
+          phone: phoneNumber.trim(),
+          email: email.trim(),
+          amount: 50,
+          currency: 'KWD',
+          paymentMethod: hasPaidMock ? 'online_paid_mock' : 'tap_payment_link',
+        }),
+      });
+
+      const data = await response.json();
+      if (data.success && data.activationCode?.code) {
+        receivedCode = data.activationCode.code;
+        setAssignedActivationCode(receivedCode);
+      }
+    } catch (err) {
+      console.warn('Order sync to MongoDB backend noted:', err);
+    } finally {
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+    }
 
     trackEvent('purchase_order_submitted', {
       orderId,
       customer_name: fullName,
       customer_phone: phoneNumber,
       has_mock_paid: hasPaidMock,
+      activation_code: receivedCode,
     });
 
-    // Automatically open WhatsApp in a new tab for a fast, frictionless flow
+    // Open WhatsApp in a new tab for a fast, frictionless flow
     try {
-      window.open(dynamicWhatsAppUrl, '_blank', 'noopener,noreferrer');
+      const targetUrl = receivedCode
+        ? `https://wa.me/96569073494?text=${encodeURIComponent(
+            `مرحباً أستاذة منيرة، قمت بسداد رسوم "دليل نجاح مشروع الأزياء" وحجز نسختي في الموقع:\n` +
+              `• الاسم: ${cleanName}\n` +
+              `• رقم الهاتف: ${cleanPhone}\n` +
+              `• رقم الطلب: ${orderId}\n` +
+              `• كود التفعيل المربوط: ${receivedCode}\n` +
+              `• المبلغ: 50 د.ك\n` +
+              `يرجى تأكيد الحجز وتفعيل الكود لفتح الكتاب.`
+          )}`
+        : dynamicWhatsAppUrl;
+      window.open(targetUrl, '_blank', 'noopener,noreferrer');
     } catch {
       // Fallback if popup blocked, button remains prominent
     }
@@ -101,6 +151,13 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
     navigator.clipboard.writeText(orderId);
     setCopiedOrderId(true);
     setTimeout(() => setCopiedOrderId(false), 2000);
+  };
+
+  const copyActivationCode = () => {
+    if (!assignedActivationCode) return;
+    navigator.clipboard.writeText(assignedActivationCode);
+    setCopiedActivationCode(true);
+    setTimeout(() => setCopiedActivationCode(false), 2000);
   };
 
   return (
@@ -193,6 +250,29 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
                   </div>
                 </div>
 
+                {/* Linked Activation Code */}
+                {assignedActivationCode && (
+                  <div className="flex items-center justify-between pb-2 border-b border-[#B99A61]/15 bg-[#B99A61]/10 -mx-4 px-4 py-1.5">
+                    <span className="text-xs font-semibold text-[#E6CA85] flex items-center gap-1.5">
+                      <KeyRound className="w-3.5 h-3.5 text-[#B99A61]" />
+                      <span>{isRtl ? 'كود التفعيل المربوط:' : 'Activation Code:'}</span>
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-sm font-extrabold text-white tracking-wider">
+                        {assignedActivationCode}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={copyActivationCode}
+                        className="p-1 text-[#E6CA85] hover:text-white transition-colors cursor-pointer"
+                        title={isRtl ? 'نسخ كود التفعيل' : 'Copy Activation Code'}
+                      >
+                        {copiedActivationCode ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                      </button>
+                    </div>
+                  </div>
+                )}
+
                 <div className="flex items-center justify-between text-xs text-[#E5DED1]">
                   <span>{isRtl ? 'الاسم:' : 'Name:'}</span>
                   <span className="font-semibold">{fullName}</span>
@@ -204,10 +284,22 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
                 </div>
 
                 <div className="flex items-center justify-between text-xs text-[#E5DED1]">
-                  <span>{isRtl ? 'حالة الحساب:' : 'Status:'}</span>
+                  <span>{isRtl ? 'الكتاب المحجوز:' : 'Book:'}</span>
+                  <span className="font-semibold text-[#D8BF8A] truncate max-w-[200px]">
+                    {isRtl ? 'أسرار وتناغم الأزياء الراقية' : 'Haute Couture Fashion Guide'}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between text-xs text-[#E5DED1]">
+                  <span>{isRtl ? 'المبلغ المطلوب:' : 'Amount:'}</span>
+                  <span className="font-mono font-bold text-[#E6CA85]">50 KWD (د.ك)</span>
+                </div>
+
+                <div className="flex items-center justify-between text-xs text-[#E5DED1] pt-1 border-t border-[#B99A61]/10">
+                  <span>{isRtl ? 'حالة التفعيل:' : 'Status:'}</span>
                   <span className="inline-flex items-center gap-1 text-amber-400 font-semibold">
                     <Clock className="w-3 h-3" />
-                    <span>{isRtl ? 'بانتظار كود التفعيل عبر واتساب' : 'Awaiting code on WhatsApp'}</span>
+                    <span>{isRtl ? 'قيد المراجعة واعتماد الإدارة' : 'Pending Admin Approval'}</span>
                   </span>
                 </div>
               </div>
@@ -408,13 +500,20 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({
                   <div className="pt-2">
                     <button
                       type="submit"
-                      className="w-full py-3.5 px-5 rounded-2xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-extrabold font-arabic-display text-sm sm:text-base shadow-lg shadow-[#25D366]/20 hover:scale-[1.01] active:scale-98 transition-all flex items-center justify-center gap-2.5 cursor-pointer"
+                      disabled={isSubmitting}
+                      className="w-full py-3.5 px-5 rounded-2xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-extrabold font-arabic-display text-sm sm:text-base shadow-lg shadow-[#25D366]/20 hover:scale-[1.01] active:scale-98 transition-all flex items-center justify-center gap-2.5 cursor-pointer disabled:opacity-70"
                     >
-                      <WhatsAppIcon className="w-5 h-5 fill-current" />
+                      {isSubmitting ? (
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                      ) : (
+                        <WhatsAppIcon className="w-5 h-5 fill-current" />
+                      )}
                       <span>
-                        {isRtl
-                          ? 'تأكيد الطلب والتواصل على واتساب لاستلام الكود'
-                          : 'Confirm & Get Code on WhatsApp'}
+                        {isSubmitting
+                          ? (isRtl ? 'جاري تسجيل الطلب...' : 'Registering order...')
+                          : (isRtl
+                              ? 'تأكيد الطلب والتواصل على واتساب لاستلام الكود'
+                              : 'Confirm & Get Code on WhatsApp')}
                       </span>
                     </button>
                   </div>

@@ -1,5 +1,17 @@
-import React from 'react';
-import { BookOpen, X, Clock, ShieldCheck, ArrowRight, ArrowLeft } from 'lucide-react';
+import React, { useState } from 'react';
+import {
+  BookOpen,
+  X,
+  Clock,
+  ShieldCheck,
+  ArrowRight,
+  ArrowLeft,
+  KeyRound,
+  CheckCircle2,
+  AlertCircle,
+  Loader2,
+  Sparkles,
+} from 'lucide-react';
 import { useLanguage } from '../../hooks/useLanguage';
 import { BRAND_CONFIG } from '../../config/brand';
 import { WhatsAppIcon } from './SocialIcons';
@@ -17,20 +29,62 @@ export const MyBookModal: React.FC<MyBookModalProps> = ({
   onGoToCheckout,
 }) => {
   const { isRtl } = useLanguage();
+  const [activationInput, setActivationInput] = useState('');
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [verifyResult, setVerifyResult] = useState<{
+    success: boolean;
+    valid?: boolean;
+    accessGranted?: boolean;
+    status?: string;
+    message: string;
+    details?: any;
+  } | null>(null);
 
   if (!isOpen) return null;
 
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
 
+  const handleVerifySubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!activationInput.trim()) return;
+
+    setIsVerifying(true);
+    setVerifyResult(null);
+
+    try {
+      const res = await fetch('/api/activation/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: activationInput.trim().toUpperCase() }),
+      });
+      const data = await res.json();
+      setVerifyResult({
+        success: data.success,
+        valid: data.valid,
+        accessGranted: data.accessGranted,
+        status: data.status,
+        message: data.message || 'تم فحص كود التفعيل',
+        details: data.details,
+      });
+    } catch (err: any) {
+      setVerifyResult({
+        success: false,
+        message: isRtl ? 'تعذر الاتصال بالسيرفر، يرجى المحاولة لاحقاً' : 'Connection error',
+      });
+    } finally {
+      setIsVerifying(false);
+    }
+  };
+
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/85 backdrop-blur-md animate-in fade-in duration-200"
       role="dialog"
       aria-modal="true"
       aria-labelledby="my-book-title"
     >
       <div
-        className="relative w-full max-w-lg rounded-3xl bg-[#1A1412] border border-[#B99A61]/40 text-[#F7F2EA] shadow-2xl p-6 sm:p-8 overflow-hidden select-none"
+        className="relative w-full max-w-lg rounded-3xl bg-[#1A1412] border border-[#B99A61]/40 text-[#F7F2EA] shadow-2xl p-6 sm:p-8 overflow-hidden select-none max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Subtle Ambient Radial Gold Glow */}
@@ -72,27 +126,76 @@ export const MyBookModal: React.FC<MyBookModalProps> = ({
           </div>
         </div>
 
-        {/* Activation Status Banner */}
-        <div className="mb-6 p-4 rounded-2xl bg-[#241D1A]/90 border border-[#B99A61]/30 flex items-start gap-3.5">
-          <div className="w-8 h-8 rounded-full bg-amber-500/15 border border-amber-500/30 flex items-center justify-center shrink-0 text-amber-400 mt-0.5">
-            <Clock className="w-4 h-4" />
-          </div>
-          <div className="flex-1 text-xs sm:text-sm">
-            <h4 className="font-bold text-[#E6CA85] mb-1 font-arabic-display">
-              {isRtl ? 'حالة التفعيل: بانتظار موافقة الإدارة' : 'Status: Pending Admin Activation'}
+        {/* Code Activation Form */}
+        <div className="mb-6 p-4 rounded-2xl bg-[#241D1A]/90 border border-[#B99A61]/35">
+          <div className="flex items-center gap-2 mb-2">
+            <KeyRound className="w-4 h-4 text-[#E6CA85]" />
+            <h4 className="font-bold text-sm text-[#E6CA85] font-arabic-display">
+              {isRtl ? 'تفعيل الدخول بكود التفعيل الخاص بك' : 'Enter Your Activation Code'}
             </h4>
-            <p className="text-[#C8BFB5] leading-relaxed">
-              {isRtl
-                ? 'لا يتم فتح واستعراض الكتاب إلا بعد إتمام عملية الشراء وتأكيد كود التفعيل عبر الواتساب من قِبل الإدارة.'
-                : 'The complete book unlocks only after payment completion and WhatsApp concierge verification by the administrator.'}
-            </p>
           </div>
+          <p className="text-xs text-[#C8BFB5] mb-3 leading-relaxed">
+            {isRtl
+              ? 'إذا حصلت على كود التفعيل المربوط بطلبك بعد اعتماد الإدارة، أدخله هنا لفتح الكتاب مباشرة:'
+              : 'Enter the activation code linked to your order to unlock the book:'}
+          </p>
+
+          <form onSubmit={handleVerifySubmit} className="flex gap-2">
+            <input
+              type="text"
+              value={activationInput}
+              onChange={(e) => setActivationInput(e.target.value)}
+              placeholder={isRtl ? 'مثال: ACT-XXXXXX' : 'e.g. ACT-XXXXXX'}
+              className="flex-1 px-3.5 py-2.5 rounded-xl bg-black/50 border border-[#B99A61]/30 focus:border-[#E6CA85] focus:outline-none text-white font-mono text-xs uppercase"
+            />
+            <button
+              type="submit"
+              disabled={isVerifying || !activationInput.trim()}
+              className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#B99A61] to-[#E6CA85] text-[#140E0C] font-bold text-xs shadow-md hover:scale-[1.01] active:scale-98 transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+            >
+              {isVerifying ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <ShieldCheck className="w-4 h-4" />
+              )}
+              <span>{isRtl ? 'تحقق وتفعيل' : 'Verify'}</span>
+            </button>
+          </form>
+
+          {/* Verification Feedback */}
+          {verifyResult && (
+            <div
+              className={`mt-3 p-3 rounded-xl border text-xs flex items-start gap-2.5 animate-in fade-in ${
+                verifyResult.accessGranted
+                  ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300'
+                  : verifyResult.status === 'pending'
+                  ? 'bg-amber-500/15 border-amber-500/40 text-amber-300'
+                  : 'bg-rose-500/15 border-rose-500/40 text-rose-300'
+              }`}
+            >
+              {verifyResult.accessGranted ? (
+                <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5 text-emerald-400" />
+              ) : verifyResult.status === 'pending' ? (
+                <Clock className="w-4 h-4 shrink-0 mt-0.5 text-amber-400" />
+              ) : (
+                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-rose-400" />
+              )}
+              <div className="flex-1">
+                <span className="font-semibold block">{verifyResult.message}</span>
+                {verifyResult.details?.customerName && (
+                  <span className="text-[11px] opacity-80 block mt-0.5">
+                    العميل: {verifyResult.details.customerName}
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* 3 Steps to Unlock */}
+        {/* Status / Instructions Card */}
         <div className="space-y-3 mb-6 text-xs sm:text-sm">
           <h4 className="text-[11px] font-editorial-serif tracking-widest text-[#B99A61] uppercase font-bold">
-            {isRtl ? 'كيف يتم فتح نسختك؟' : 'How to unlock your copy:'}
+            {isRtl ? 'كيف يتم فتح نسختك؟' : 'How access works:'}
           </h4>
 
           <div className="space-y-2.5">
@@ -102,8 +205,8 @@ export const MyBookModal: React.FC<MyBookModalProps> = ({
               </span>
               <span className="text-[#E5DED1]">
                 {isRtl
-                  ? 'سدد الرسوم عبر رابط الدفع وسجل اسمك ورقم هاتفك (واتساب).'
-                  : 'Complete payment via the link and submit your name & WhatsApp phone.'}
+                  ? 'سدد الرسوم وسجل بياناتك في صفحة الشراء لإنشاء طلبك وكودك المربوط تلقائياً.'
+                  : 'Submit your details on checkout to generate your order & linked code.'}
               </span>
             </div>
 
@@ -113,8 +216,8 @@ export const MyBookModal: React.FC<MyBookModalProps> = ({
               </span>
               <span className="text-[#E5DED1]">
                 {isRtl
-                  ? 'تواصل مع فريق الدعم عبر الواتساب للحصول على كود التفعيل المباشر.'
-                  : 'Message our concierge on WhatsApp to receive your instant activation code.'}
+                  ? 'تواصل عبر واتساب لإرسال رقم الطلب والكود المربوط لتأكيد السداد.'
+                  : 'Send your order ID & code on WhatsApp to verify payment.'}
               </span>
             </div>
 
@@ -124,8 +227,8 @@ export const MyBookModal: React.FC<MyBookModalProps> = ({
               </span>
               <span className="text-[#E5DED1]">
                 {isRtl
-                  ? 'فور اعتماد الإدارة، سيتم فتح الكتاب وتصفحه مباشرة من هذا الحساب.'
-                  : 'Once approved by admin, the volume unlocks permanently for your account.'}
+                  ? 'فور موافقة الإدارة وتفعيل الكود، يمكنك إدخاله هنا وتصفح الكتاب مباشرة.'
+                  : 'Once admin approves, unlock and browse the book right here.'}
               </span>
             </div>
           </div>
@@ -155,7 +258,6 @@ export const MyBookModal: React.FC<MyBookModalProps> = ({
             <span>{isRtl ? 'تواصل عبر واتساب' : 'WhatsApp Concierge'}</span>
           </a>
         </div>
-
       </div>
     </div>
   );
